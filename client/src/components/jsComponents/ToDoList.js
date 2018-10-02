@@ -14,43 +14,48 @@ class ToDoList extends Component {
     this.handleAddTask = this.handleAddTask.bind(this);
   }
   componentDidMount() {
-    console.log('did mount');
-    fetch('/api/tasks').then(res => res.json()).then(tasks => this.setState({tasks}));
+    this.updateTasks();
+  }
+  updateTasks() {
+    fetch(`/api/tasks`).then(res => res.json()).then(tasks => this.setState({tasks}));
+    console.log(this.state.tasks);
   }
   handleCompleteTask(task) {
-    //put
-    this.setState((state) => {
-      let newTasks = state.tasks;
-      newTasks[task.id].isCompleted = true;
-      return { tasks: newTasks};
-    });
-    this.renewIds();
+    task.isCompleted = true;
+    fetch(
+      `/api/tasks/${task.id}`,
+      {
+        method: 'put',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(task)
+      }
+    );
+    this.updateTasks();
   }
   handleDeleteTask(task) {
-    //delete
-    this.setState((state) => {
-      let newTasks = state.tasks;
-      newTasks.splice(newTasks.indexOf(newTasks.find(todo => todo.id === task.id)), 1);
-      return { tasks: newTasks};
+    fetch(`/api/tasks/${task.id}`,{
+      method: 'delete',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     });
-    this.renewIds();//обновляю айдишники
-  }
-  renewIds() {
-    this.state.tasks.forEach(task => {
-      task.id = this.state.tasks.indexOf(task);
-    });
+    this.updateTasks();
   }
   handleAddTask(task){
-    //push
-    this.setState((state) => {
-      let newTasks = state.tasks;
-      newTasks.push({
-        id: newTasks[newTasks.length-1].id + 1,
-        task: task,
-        isCompleted: false
-      });
-      return { tasks: newTasks};
+    fetch('/api/tasks',
+    {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({task: task})//text
     });
+    this.updateTasks();
   }
   handleHideTasks() {
     let list = document.querySelector(".CompletedList");
@@ -61,17 +66,6 @@ class ToDoList extends Component {
     }
   }
   render() {
-    // fetch(
-    //   '/api/updateTasks',
-    //   {
-    //     method: 'POST',
-    //     headers: {
-    //       'Accept': 'application/json',
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({taskss: this.state.tasks})
-    //   }
-    // );//обновить данные на сервере
     return (
       <div className="ToDoList">
         <Title />
