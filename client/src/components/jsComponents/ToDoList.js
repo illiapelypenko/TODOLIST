@@ -7,44 +7,17 @@ class ToDoList extends Component {
   constructor() {
     super();
     this.state = {
-      tasks: [
-        {
-          "id": 0,
-          "task": "to make a website",
-          "isCompleted": false
-        },
-        {
-          "id": 1,
-          "task": "to do my homework",
-          "isCompleted": false
-        },
-        {
-          "id": 2,
-          "task": "to make a coffee",
-          "isCompleted": false
-        },
-        {
-          "id": 3,
-          "task": "to make a tea",
-          "isCompleted": true
-        },
-        {
-          "id": 4,
-          "task": "to read a book",
-          "isCompleted": false
-        },
-        {
-          "id": 5,
-          "task": "to do workout",
-          "isCompleted": true
-        }
-      ]
+      tasks: []
     };
     this.handleCompleteTask = this.handleCompleteTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
     this.handleAddTask = this.handleAddTask.bind(this);
   }
+  componentDidMount() {
+    fetch('/api/tasks').then(res => res.json()).then(tasks => this.setState({tasks}));
+  }
   handleCompleteTask(task) {
+    //put
     this.setState((state) => {
       let newTasks = state.tasks;
       newTasks[task.id].isCompleted = true;
@@ -53,6 +26,7 @@ class ToDoList extends Component {
     this.renewIds();
   }
   handleDeleteTask(task) {
+    //delete
     this.setState((state) => {
       let newTasks = state.tasks;
       newTasks.splice(newTasks.indexOf(newTasks.find(todo => todo.id === task.id)), 1);
@@ -66,6 +40,7 @@ class ToDoList extends Component {
     });
   }
   handleAddTask(task){
+    //push
     this.setState((state) => {
       let newTasks = state.tasks;
       newTasks.push({
@@ -77,16 +52,25 @@ class ToDoList extends Component {
     });
   }
   handleHideTasks() {
-    console.log(document.querySelector(".CompletedList"));
     let list = document.querySelector(".CompletedList");
-    if(list.style.display == 'none'){
+    if(list.style.display === 'none'){
       list.style.display = 'block';
     } else {
       list.style.display = 'none';
     }
   }
   render() {
-    console.log(this.state.tasks);
+    // fetch(
+    //   '/api/updateTasks',
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Accept': 'application/json',
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({taskss: this.state.tasks})
+    //   }
+    // );//обновить данные на сервере
     return (
       <div className="ToDoList">
         <Title />

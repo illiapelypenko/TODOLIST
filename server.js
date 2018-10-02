@@ -12,15 +12,9 @@ app.get('/api/tasks', (req, res ) => {
   res.json(tasks);  
 }); 
 
-app.post('/api/newTask', (req, res) => {
-  let data = fs.readFileSync('Tasks.json');
-  let tasks = JSON.parse(data);
-  tasks.push({
-    id: tasks[tasks.length-1].id+1,
-    task: req.body.task,
-    isComplited: false
-  });
-  fs.writeFileSync('./Tasks.json', JSON.stringify(tasks, null, '\t'));
+app.post('/api/updateTasks', (req, res) => {
+  //fs.writeFileSync('./Tasks.json', JSON.stringify(req.body.tasks, null, '\t'));
+  console.log(req.body);
 });
 
 
