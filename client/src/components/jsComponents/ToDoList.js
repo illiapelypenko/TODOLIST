@@ -14,6 +14,7 @@ class ToDoList extends Component {
     this.handleAddTask = this.handleAddTask.bind(this);
   }
   componentDidMount() {
+    console.log('did mount');
     fetch('/api/tasks').then(res => res.json()).then(tasks => this.setState({tasks}));
   }
   handleCompleteTask(task) {
