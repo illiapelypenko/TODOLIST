@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
+import '../cssComponents/Task.css'
 
-
-class Task extends Component { //props: task onCompliteTask
+class Task extends Component { //props: task onCompleteTask
   constructor(props) {
     super(props);
-    this.onCompliteTask = this.onCompliteTask.bind(this);
-    this.onDeleteTask = this.onDeleteTask.bind(this);
+    this.handleCompleteTask = this.handleCompleteTask.bind(this);
+    this.handleDeleteTask = this.handleDeleteTask.bind(this);
   }
-  onCompliteTask() {//передаем task{} в корень
-    this.props.onCompliteTask(this.props.task);
+  handleCompleteTask() {//передаем task{} в корень
+    this.props.onCompleteTask(this.props.task);
   }
-  onDeleteTask() {//передаем task{} в корень
+  handleDeleteTask() {//передаем task{} в корень
     this.props.onDeleteTask(this.props.task);
   }
   render() {
     return (
         <li className="Task">
-          {this.props.task.task}
-          <button onClick={this.onCompliteTask}>complite</button>
-          <button onClick={this.onDeleteTask}>delete</button>
+          <div className='TaskText'>{this.props.task.task}</div>
+          {this.props.onCompleteTask ? <button onClick={this.handleCompleteTask}>complete</button> : null}
+          {this.props.onDeleteTask ? <button onClick={this.handleDeleteTask}>delete</button> : null}
         </li>
         
     );

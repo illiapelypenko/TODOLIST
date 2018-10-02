@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 class Form extends Component {
   constructor(props) {
     super(props);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.onAddTask = this.onAddTask.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleAddTask = this.handleAddTask.bind(this);
     this.state = {
       inputedTask: ''
     }
   }
-  onInputChange(e) {
+  handleInputChange(e) {
     this.setState({inputedTask: e.target.value});
   }
-  onAddTask(e){
+  handleAddTask(e){
     this.props.onAddTask(this.state.inputedTask);
     this.setState({inputedTask: ''});
     e.preventDefault();
@@ -20,10 +20,10 @@ class Form extends Component {
   render() {
     return (
       <div className="Form">
-        <form onSubmit={this.onAddTask}>
+        <form onSubmit={this.handleAddTask}>
           <div>
             <input type='text' ref='input' 
-            onChange={this.onInputChange} value={this.state.inputedTask} ></input>
+            onChange={this.handleInputChange} value={this.state.inputedTask} ></input>
           </div>
           <div>
             <input type='submit' value='Add' />
