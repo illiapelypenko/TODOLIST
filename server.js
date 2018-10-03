@@ -4,66 +4,44 @@ const port = 5000;
 const app = express(); 
 const fs = require('fs');
 app.use(bodyParser.json());
-let tasks = [
-	{
-		"id": 0,
-		"task": "to make a webapp",
-		"isCompleted": false
-	},
-	{
-		"id": 1,
-		"task": "to do my homework",
-		"isCompleted": false
-	},
-	{
-		"id": 2,
-		"task": "to make a coffee",
-		"isCompleted": false
-	},
-	{
-		"id": 3,
-		"task": "to make a tea",
-		"isCompleted": true
-	},
-	{
-		"id": 4,
-		"task": "to read a book",
-		"isCompleted": false
-	},
-	{
-		"id": 5,
-		"task": "to do workout",
-		"isCompleted": true
-	}
-];
 
 app.get('/api/tasks', (req, res ) => {    
-  res.json(tasks);  
+  fs.readFile('./Tasks.json', (err, data) => {
+    let tasks = JSON.parse(data);
+    res.json(tasks); 
+  });
 }); 
 
-app.get('/api/tasks/:id', (req, res) => {
-  res.json(tasks.find(task => task.id == req.params.id));
-});
-
 app.post('/api/tasks/', (req, res) => {
-  tasks.push({
-    id: tasks.length,
-    task: req.body.task,
-    isCompleted: false
+  fs.readFile('./Tasks.json', (err, data) => {
+    let tasks = JSON.parse(data);
+    tasks.push({
+      id: tasks.length,
+      task: req.body.task,
+      isCompleted: false
+    });
+    fs.writeFile('./Tasks.json', JSON.stringify(tasks), (err, data) => {
+      res.send();//react обновляет компонент до того как записался файл
+    });
   });
-  res.send();
 });
-
+//---------------------------разобраться с верхим сначало
 app.put('/api/tasks/:id', (req, res) => {
+  let data = fs.readFileSync('./Tasks.json');
+  let tasks = JSON.parse(data);
   tasks[tasks.indexOf(tasks.find(task => task.id == req.params.id))] = req.body;
+  fs.writeFileSync('./Tasks.json', JSON.stringify(tasks), null, '\t');
   res.send();
 });
 
 app.delete('/api/tasks/:id', (req, res) => {
+  let data = fs.readFileSync('./Tasks.json');
+  let tasks = JSON.parse(data);
   tasks.splice(tasks.indexOf(tasks.find(task => task.id == req.params.id)), 1);
   tasks.forEach(task => {
     task.id = tasks.indexOf(task);
   });
+  fs.writeFileSync('./Tasks.json', JSON.stringify(tasks), null, '\t');
   res.send();
 });
 

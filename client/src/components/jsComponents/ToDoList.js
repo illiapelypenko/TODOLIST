@@ -18,7 +18,6 @@ class ToDoList extends Component {
   }
   updateTasks() {
     fetch(`/api/tasks`).then(res => res.json()).then(tasks => this.setState({tasks}));
-    console.log(this.state.tasks);
   }
   handleCompleteTask(task) {
     task.isCompleted = true;
