@@ -11,7 +11,6 @@ app.get('/api/tasks', (req, res ) => {
     res.json(tasks); 
   });
 }); 
-
 app.post('/api/tasks/', (req, res) => {
   fs.readFile('./Tasks.json', (err, data) => {
     let tasks = JSON.parse(data);
@@ -20,29 +19,26 @@ app.post('/api/tasks/', (req, res) => {
       task: req.body.task,
       isCompleted: false
     });
-    fs.writeFile('./Tasks.json', JSON.stringify(tasks), (err, data) => {
-      res.send();//react обновляет компонент до того как записался файл
+    fs.writeFile('./Tasks.json', JSON.stringify(tasks, null, '\t'), (err, data) => {
+      res.send();
     });
   });
 });
-//---------------------------разобраться с верхим сначало
 app.put('/api/tasks/:id', (req, res) => {
-  let data = fs.readFileSync('./Tasks.json');
-  let tasks = JSON.parse(data);
-  tasks[tasks.indexOf(tasks.find(task => task.id == req.params.id))] = req.body;
-  fs.writeFileSync('./Tasks.json', JSON.stringify(tasks), null, '\t');
-  res.send();
-});
-
-app.delete('/api/tasks/:id', (req, res) => {
-  let data = fs.readFileSync('./Tasks.json');
-  let tasks = JSON.parse(data);
-  tasks.splice(tasks.indexOf(tasks.find(task => task.id == req.params.id)), 1);
-  tasks.forEach(task => {
-    task.id = tasks.indexOf(task);
+  fs.readFile('./Tasks.json', (err, data)=>{
+    let tasks = JSON.parse(data);
+    tasks[tasks.indexOf(tasks.find(task => task.id == req.params.id))] = req.body;
+    fs.writeFile('./Tasks.json', JSON.stringify(tasks, null, '\t'), (err)=>{res.send()});
   });
-  fs.writeFileSync('./Tasks.json', JSON.stringify(tasks), null, '\t');
-  res.send();
 });
-
-app.listen(port, () => console.log(`Server started on port ${port}`));
+app.delete('/api/tasks/:id', (req, res) => {
+  fs.readFile('./Tasks.json', (err, data) => {
+    let tasks = JSON.parse(data);
+    tasks.splice(tasks.indexOf(tasks.find(task => task.id == req.params.id)), 1);
+    tasks.forEach(task => {
+      task.id = tasks.indexOf(task);
+    });
+    fs.writeFile('./Tasks.json', JSON.stringify(tasks, null, '\t'), ()=>{res.send()});
+  });
+});
+app.listen(port, () => console.log(`Server started on port ${port}`)); 

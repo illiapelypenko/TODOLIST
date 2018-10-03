@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Title from './Title.js';
 import TaskList from './TaskList.js';
 import Form from './Form.js';
-//2
+import '../cssComponents/ToDoList.css';
+
 class ToDoList extends Component {
   constructor() {
     super();
@@ -31,8 +32,9 @@ class ToDoList extends Component {
         },
         body: JSON.stringify(task)
       }
-    );
-    this.updateTasks();
+    ).then(()=>{
+      this.updateTasks();
+    });
   }
   handleDeleteTask(task) {
     fetch(`/api/tasks/${task.id}`,{
@@ -41,8 +43,9 @@ class ToDoList extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
+    }).then(()=>{
+      this.updateTasks();
     });
-    this.updateTasks();
   }
   handleAddTask(task){
     fetch('/api/tasks',
@@ -53,8 +56,9 @@ class ToDoList extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({task: task})//text
-    });
-    this.updateTasks();
+    }).then(()=>{
+      this.updateTasks();
+    });    
   }
   handleHideTasks() {
     let list = document.querySelector(".CompletedList");
