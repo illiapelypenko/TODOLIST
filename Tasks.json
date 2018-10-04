@@ -1,32 +1,38 @@
 [
 	{
-		"id": 0,
 		"task": "to make a webapp",
-		"isCompleted": false
+		"isCompleted": true
 	},
 	{
-		"id": 1,
-		"task": "to do my homework",
-		"isCompleted": false
-	},
-	{
-		"id": 2,
 		"task": "to make a coffee",
-		"isCompleted": false
+		"isCompleted": true
 	},
 	{
-		"id": 3,
 		"task": "to make a tea",
 		"isCompleted": true
 	},
 	{
-		"id": 4,
-		"task": "to read a book",
+		"task": "to do workout",
+		"isCompleted": true
+	},
+	{
+		"task": "to go to sleep",
+		"isCompleted": true
+	},
+	{
+		"task": "go skiing",
+		"isCompleted": true
+	},
+	{
+		"task": "to add css",
 		"isCompleted": false
 	},
 	{
-		"id": 5,
-		"task": "to do workout",
+		"task": "connect mongobd",
 		"isCompleted": true
+	},
+	{
+		"task": "complete git",
+		"isCompleted": false
 	}
 ]

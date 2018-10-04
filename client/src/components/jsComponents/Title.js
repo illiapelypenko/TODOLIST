@@ -5,7 +5,7 @@ class Title extends Component {
   render() {
     return (
       <div className="Title">
-        <h1> TODOLIST </h1>
+        TODOLIST
       </div>
     );
   }

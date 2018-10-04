@@ -18,12 +18,15 @@ class ToDoList extends Component {
     this.updateTasks();
   }
   updateTasks() {
-    fetch(`/api/tasks`).then(res => res.json()).then(tasks => this.setState({tasks}));
+    fetch(`/api/tasks`).then(res => res.json()).then(tasks => {
+      this.setState({tasks});
+      console.log(tasks);
+    });
   }
   handleCompleteTask(task) {
     task.isCompleted = true;
     fetch(
-      `/api/tasks/${task.id}`,
+      `/api/tasks/${task._id}`,
       {
         method: 'put',
         headers: {
@@ -37,7 +40,7 @@ class ToDoList extends Component {
     });
   }
   handleDeleteTask(task) {
-    fetch(`/api/tasks/${task.id}`,{
+    fetch(`/api/tasks/${task._id}`,{
       method: 'delete',
       headers: {
         'Accept': 'application/json',
@@ -72,8 +75,8 @@ class ToDoList extends Component {
     return (
       <div className="ToDoList">
         <Title />
-        <TaskList onCompleteTask={this.handleCompleteTask} onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === false)}/>
         <Form onAddTask={this.handleAddTask}/>
+        <TaskList onCompleteTask={this.handleCompleteTask} onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === false)}/>
 
         <button onClick={this.handleHideTasks}>Completed: </button>
 

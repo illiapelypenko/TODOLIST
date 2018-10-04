@@ -7,7 +7,7 @@ class TaskList extends Component {
     return (
       <div className={`TaskList ${this.props.additionalClassNames ? this.props.additionalClassNames : ''}`}>
         <ul>
-          {this.props.tasks.map((task) => <Task onCompleteTask={this.props.onCompleteTask} onDeleteTask={this.props.onDeleteTask} key={task.id} task={task} />)}
+          {this.props.tasks.map((task) => <Task onCompleteTask={this.props.onCompleteTask} onDeleteTask={this.props.onDeleteTask} key={task._id} task={task} />)}
         </ul>
       </div>
     );

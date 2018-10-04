@@ -16,7 +16,7 @@ class Task extends Component { //props: task onCompleteTask
   render() {
     return (
         <li className="Task">
-          <div className='TaskText'>{this.props.task.task}</div>
+          {this.props.task.task}
           {this.props.onCompleteTask ? <button onClick={this.handleCompleteTask}>complete</button> : null}
           {this.props.onDeleteTask ? <button onClick={this.handleDeleteTask}>delete</button> : null}
         </li>

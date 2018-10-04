@@ -3,42 +3,44 @@ const bodyParser = require('body-parser');
 const port = 5000;
 const app = express(); 
 const fs = require('fs');
+const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
+// Connection URL
+const url = 'mongodb://localhost:27017';
+// Database Name
+const dbName = 'todolist';
+// Create a new MongoClient
+const client = new MongoClient(url);
+let db;
+let collection;
 app.use(bodyParser.json());
+client.connect(() => {
+  db = client.db(dbName);
+  collection = db.collection('tasks');
 
-app.get('/api/tasks', (req, res ) => {    
-  fs.readFile('./Tasks.json', (err, data) => {
-    let tasks = JSON.parse(data);
-    res.json(tasks); 
+  app.listen(port, () => console.log(`Server started on port ${port}`)); 
+});
+
+app.get('/api/tasks', (req, res ) => { 
+  collection.find({}).toArray((err, tasks) => {
+    res.json(tasks);
   });
 }); 
+app.delete('/api/tasks/:id', (req, res) => {
+  collection.deleteOne({_id : new ObjectId(req.params.id)}, (err, result)=>{
+    res.send();
+  });
+});
 app.post('/api/tasks/', (req, res) => {
-  fs.readFile('./Tasks.json', (err, data) => {
-    let tasks = JSON.parse(data);
-    tasks.push({
-      id: tasks.length,
+    collection.insert({
       task: req.body.task,
       isCompleted: false
-    });
-    fs.writeFile('./Tasks.json', JSON.stringify(tasks, null, '\t'), (err, data) => {
+    }, ()=>{
       res.send();
     });
-  });
 });
 app.put('/api/tasks/:id', (req, res) => {
-  fs.readFile('./Tasks.json', (err, data)=>{
-    let tasks = JSON.parse(data);
-    tasks[tasks.indexOf(tasks.find(task => task.id == req.params.id))] = req.body;
-    fs.writeFile('./Tasks.json', JSON.stringify(tasks, null, '\t'), (err)=>{res.send()});
+  collection.update({_id : new ObjectId(req.params.id)}, {$set: { isCompleted: true }},(err, result)=>{
+    res.send();
   });
 });
-app.delete('/api/tasks/:id', (req, res) => {
-  fs.readFile('./Tasks.json', (err, data) => {
-    let tasks = JSON.parse(data);
-    tasks.splice(tasks.indexOf(tasks.find(task => task.id == req.params.id)), 1);
-    tasks.forEach(task => {
-      task.id = tasks.indexOf(task);
-    });
-    fs.writeFile('./Tasks.json', JSON.stringify(tasks, null, '\t'), ()=>{res.send()});
-  });
-});
-app.listen(port, () => console.log(`Server started on port ${port}`)); 

@@ -1,0 +1,14 @@
+body {
+  box-sizing: border-box;
+  font-family: fantasy;
+  margin: 0;
+  padding: 0;
+}
+.App {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(3, auto);
+  grid-template-areas: '. . . todolist todolist todolist todolist todolist todolist . . .'
+  '. . . todolist todolist todolist todolist todolist todolist . . .'
+  '. . . todolist todolist todolist todolist todolist todolist . . .';
+}
