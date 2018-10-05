@@ -1,8 +1,27 @@
-li {
+.Task {
   position: relative;
-  font-size: 20px;
 }
-button {
+li button {
+  margin: 0px 2px 0px 2px;
+  border: 2px solid rgb(82, 82, 82);
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 10px;
+  display: block;
   position: relative;
   right: 0;
+  float: right;
+  width: 100px;
+  font-size: 80%;
+  font-weight: bold;
+  outline: none;
+}
+li button:hover {
+  background-color: rgb(235, 235, 235);
+}
+li {
+  display: block;
+  min-height: 30px;
 }

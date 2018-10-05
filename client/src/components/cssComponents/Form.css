@@ -10,9 +10,10 @@ position: relative;
   font-size: 30px;
   font-family: fantasy;
   outline: none;
+  text-decoration: none;
 }
-input[type=text] :focus {
-  border: 2px solid #555;
+.inputField input:focus {
+  background-color: rgb(235, 235, 235);
 }
 .inputButton input{
   display: none;

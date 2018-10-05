@@ -20,7 +20,6 @@ class ToDoList extends Component {
   updateTasks() {
     fetch(`/api/tasks`).then(res => res.json()).then(tasks => {
       this.setState({tasks});
-      console.log(tasks);
     });
   }
   handleCompleteTask(task) {
@@ -65,10 +64,15 @@ class ToDoList extends Component {
   }
   handleHideTasks() {
     let list = document.querySelector(".CompletedList");
-    if(list.style.display === 'none'){
-      list.style.display = 'block';
-    } else {
+    let button = document.querySelector("#completeButton");
+    if(list.style.display === 'block'){
       list.style.display = 'none';
+      button.innerText = 'Completed';
+      button.style.borderBottom = 'none';
+    } else {
+      list.style.display = 'block';
+      button.innerText = 'Hide';
+      button.style.borderBottom = '2px solid #555';  
     }
   }
   render() {
@@ -76,11 +80,11 @@ class ToDoList extends Component {
       <div className="ToDoList">
         <Title />
         <Form onAddTask={this.handleAddTask}/>
-        <TaskList onCompleteTask={this.handleCompleteTask} onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === false)}/>
+        <TaskList onCompleteTask={this.handleCompleteTask} onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === false).reverse()}/>
 
-        <button onClick={this.handleHideTasks}>Completed: </button>
+        <button id='completeButton' onClick={this.handleHideTasks}>Completed</button>
 
-        <TaskList additionalClassNames="CompletedList" onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === true)}/>
+        <TaskList additionalClassNames="CompletedList" onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === true).reverse()}/>
       </div>
     );
   }

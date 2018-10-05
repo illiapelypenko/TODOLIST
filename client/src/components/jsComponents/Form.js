@@ -23,7 +23,7 @@ class Form extends Component {
       <div className="Form">
         <form onSubmit={this.handleAddTask}>
           <div className="inputField">
-            <input type='text' ref='input' 
+            <input spellCheck="false" type='text' ref='input' 
             onChange={this.handleInputChange} value={this.state.inputedTask} ></input>
           </div>
           <div className='inputButton'>
