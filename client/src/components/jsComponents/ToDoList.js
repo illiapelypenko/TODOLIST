@@ -11,6 +11,7 @@ class ToDoList extends Component {
       tasks: []
     };
     this.handleCompleteTask = this.handleCompleteTask.bind(this);
+    this.handleUncompleteTask = this.handleUncompleteTask.bind(this);
     this.handleDeleteTask = this.handleDeleteTask.bind(this);
     this.handleAddTask = this.handleAddTask.bind(this);
   }
@@ -23,7 +24,21 @@ class ToDoList extends Component {
     });
   }
   handleCompleteTask(task) {
-    task.isCompleted = true;
+    fetch(
+      `/api/tasks/${task._id}`,
+      {
+        method: 'put',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(task)
+      }
+    ).then(()=>{
+      this.updateTasks();
+    });
+  }
+  handleUncompleteTask(task) {
     fetch(
       `/api/tasks/${task._id}`,
       {
@@ -84,7 +99,7 @@ class ToDoList extends Component {
 
         <button id='completeButton' onClick={this.handleHideTasks}>Completed</button>
 
-        <TaskList additionalClassNames="CompletedList" onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === true).reverse()}/>
+        <TaskList additionalClassNames="CompletedList" onDeleteTask={this.handleDeleteTask} onUncompleteTask={this.handleUncompleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === true).reverse()}/>
       </div>
     );
   }
