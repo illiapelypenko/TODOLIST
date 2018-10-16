@@ -1,7 +1,9 @@
 .Title {
   padding-top: 15px;
-  font-size: 60px;;
+  font-size: 50px;;
   text-align: center;
   font-weight: bold;
   line-height: 60px;
+  background-color: rgb(89, 82, 122);
+  color: rgb(219, 197, 0);
 }

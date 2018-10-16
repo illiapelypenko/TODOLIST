@@ -30,17 +30,3 @@ li:hover{
   display: inline-block;
   flex: 1;
 }
-.divForm{
-  font-family: inherit;
-  font-size: inherit;
-  display: none;
-  flex: 1;
-  outline: none;
-}
-.divInput{
-  font-family: inherit;
-  font-size: inherit;
-  display: none;
-  flex: 1;
-  outline: none;
-}

@@ -2,14 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const port = 5000;
 const app = express(); 
-const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
-// Connection URL
 const url = 'mongodb://localhost:27017';
-// Database Name
 const dbName = 'todolist';
-// Create a new MongoClient
 const client = new MongoClient(url);
 let db;
 let collection;
@@ -17,10 +13,8 @@ app.use(bodyParser.json());
 client.connect(() => {
   db = client.db(dbName);
   collection = db.collection('tasksTest');
-
   app.listen(port, () => console.log(`Server started on port ${port}`)); 
 });
-
 app.get('/api/tasks', (req, res ) => { 
   collection.find({}).toArray((err, tasks) => {
     res.json(tasks);
