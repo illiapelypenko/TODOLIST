@@ -12,9 +12,12 @@ let collection;
 app.use(bodyParser.json());
 client.connect(() => {
   db = client.db(dbName);
-  collection = db.collection('tasksTest');
+  collection = db.collection('web');
   app.listen(port, () => console.log(`Server started on port ${port}`)); 
 });
+app.get('/api/tabs', (req, res ) => { 
+  db.collections().then(data => {res.json(data.map(d => d.s.name))});
+}); 
 app.get('/api/tasks', (req, res ) => { 
   collection.find({}).toArray((err, tasks) => {
     res.json(tasks);
@@ -35,7 +38,6 @@ app.post('/api/tasks/', (req, res) => {
 });
 app.put('/api/tasks/:id', (req, res) => {
   collection.update({_id : new ObjectId(req.params.id)}, {$set: { isCompleted: !req.body.isCompleted }},(err, result)=>{
-    console.log(req.body.isCompleted);
     res.send();
   });
 });

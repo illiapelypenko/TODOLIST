@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Title from './Title.js';
+import TabPanel from './TabPanel.js';
 import TaskList from './TaskList.js';
 import Form from './Form.js';
 import '../cssComponents/ToDoList.css';
@@ -8,7 +9,8 @@ class ToDoList extends Component {
   constructor() {
     super();
     this.state = {
-      tasks: []
+      tasks: [],
+      tabs: []//string[]?
     };
     this.handleCompleteTask = this.handleCompleteTask.bind(this);
     this.handleUncompleteTask = this.handleUncompleteTask.bind(this);
@@ -16,11 +18,14 @@ class ToDoList extends Component {
     this.handleAddTask = this.handleAddTask.bind(this);
   }
   componentDidMount() {
-    this.updateTasks();
+    this.updateState();
   }
-  updateTasks() {
+  updateState() {
     fetch(`/api/tasks`).then(res => res.json()).then(tasks => {
       this.setState({tasks});
+    });
+    fetch(`/api/tabs`).then(res => res.json()).then(tabs => {
+      this.setState({tabs});//get tabs names from database
     });
   }
   handleCompleteTask(task) {
@@ -34,9 +39,7 @@ class ToDoList extends Component {
         },
         body: JSON.stringify(task)
       }
-    ).then(()=>{
-      this.updateTasks();
-    });
+    ).then(this.updateState());
   }
   handleUncompleteTask(task) {
     fetch(
@@ -49,9 +52,7 @@ class ToDoList extends Component {
         },
         body: JSON.stringify(task)
       }
-    ).then(()=>{
-      this.updateTasks();
-    });
+    ).then(this.updateState());
   }
   handleDeleteTask(task) {
     fetch(`/api/tasks/${task._id}`,{
@@ -60,9 +61,7 @@ class ToDoList extends Component {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    }).then(()=>{
-      this.updateTasks();
-    });
+    }).then(this.updateState());
   }
   handleAddTask(task){
     fetch('/api/tasks',
@@ -73,9 +72,7 @@ class ToDoList extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({task: task})//text
-    }).then(()=>{
-      this.updateTasks();
-    });    
+    }).then(this.updateState()); 
   }
   handleHideTasks() {
     let list = document.querySelector(".CompletedList");
@@ -94,7 +91,11 @@ class ToDoList extends Component {
     return (
       <div className="ToDoList">
         <Title />
+        
+        <TabPanel tabs={this.state.tabs}/>
+
         <Form onAddTask={this.handleAddTask}/>
+
         <TaskList onCompleteTask={this.handleCompleteTask} onDeleteTask={this.handleDeleteTask} tasks={this.state.tasks.filter(task => task.isCompleted === false).reverse()}/>
 
         <button id='completeButton' onClick={this.handleHideTasks}>Completed</button>

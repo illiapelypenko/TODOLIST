@@ -1,4 +1,5 @@
 .Task {
+  cursor: pointer;
   position: relative;
   display: flex;
   min-height: 30px;

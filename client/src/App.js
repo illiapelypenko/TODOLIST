@@ -13,13 +13,3 @@ class App extends Component {
 }
 
 export default App;
-
-/*
-ToDoList {
-  Title  
-  UncomplitedTaskList {
-    
-  }
-  Form
-}
-*/
